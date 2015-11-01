@@ -2,7 +2,12 @@
 
 The purpose of this repository is to provide high level instructions for a class
 leader to set up a modern cpp IDE on stuudent computers that is both free and 
-runs on Windows.
+runs on Windows. This is a written version for window Baris Yuksel's excellent 
+videos.
+
+1.  <https://www.youtube.com/watch?v=HTUE03LnaXA>
+2.  <https://www.youtube.com/watch?v=r_HW0EB67eY>
+3.  <https://www.youtube.com/watch?v=Ib914gNr0ys>
 
 # What's with the name?
 
@@ -213,6 +218,154 @@ You can then run them in the way shown below:
 
     python ez_setup.py
     python get-pip.py
+    pip install virtualenv
 
 It is generally good practice to set up a virtual environment in
-Python. We then set up a virtual environment.
+Python. We then set up a virtual environment. I am going to suggest that 
+we set up a virtualenv in user space.
+
+    cd c:/Users/evan/Documents
+    mkdir myVenv
+    cd myVenv
+    virtualenv lint
+    lint/Scripts/activate
+
+The prompt should change and have a begin with '(lint)'. We can now install a python 
+program to check our C++ style
+
+    pip install cpplint
+
+Go get a glass of water.  Everything else is in Emacs.
+
+# Emacs Configuration
+
+I am not sure if I should copy the text here verbatim or I should tell
+the reader to take a second and read <https://kb.iu.edu/d/aghb>.  It
+explains the key strokes we will need to describe. Assuming you have
+read it, Let's tye `C x C f` to find a new file and make sure it is in
+your home directory.  The line in the small space at the bottom of
+Emacs called the mini-buffer should read:
+
+    ~/.emacs
+
+Now following the convention in <https://github.com/technomancy/emacs-starter-kit> add
+marmalade to your .emacs file.
+
+    (require 'package)
+    (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+
+Now we can define some new packages and install them automatically.
+
+    (defvar my-packages '(semantic/sb iedit auto-complete auto-complete-config
+                                      auto-complete-c-headers flymake-google-cpplint
+                                      flymake-cursor google-c-style))
+    
+    (package-initialize)
+    (dolist (p my-packages)
+      (when (not (package-installed-p p))
+        (package-install p)))
+
+Next we add the configuration. You need to substitute your students windows user name
+where you see <user>.  The '<>' brackets are an indicator of a parameter and should
+not be included.
+
+    (global-ede-mode 1)
+    (require 'semantic/sb)
+    (semantic-mode 1)
+    
+    (require 'iedit)
+    (require 'auto-complete)
+    (global-auto-complete-mode t)
+    
+    
+    (require 'auto-complete-config)
+    (add-to-list 'ac-dictionary-directories "C:/Users/<user>/.emacs.d/elpa/auto-complete-20150618.1949/dict")
+    (set-default 'ac-c-sources
+             '(ac-source-abbrev
+               ac-source-dictionary
+               ac-source-yasnippet
+               ac-source-words-in-buffer
+               ac-source-words-in-same-mode-buffers
+               ac-source-semantic))
+    (ac-config-default)
+    
+    
+    (defun my:add-semantic-to-autocomplete()
+      (add-to-list 'ac-sources 'ac-sources-semantic)
+      )
+    (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+    (add-hook 'c++-mode-common-hook 'my:add-semantic-to-autocomplete)
+
+In order to complete the headers for the student. You need to determine where they 
+are located. Since we have loaded g++ from cygwin and changed our path we can execute
+the following at the command prompt:
+
+    gcc -xc++ -E -v -
+
+Use the result to modify:
+
+    (defun my:ac-c-header-init ()
+      (require 'auto-complete-c-headers)
+      (add-to-list 'ac-sources 'ac-source-c-headers)
+      ;;  (add-to-list 'achead:include-directories '"/usr/lib/gcc/x86_64-linux-gnu/4.8/include")
+      (add-to-list 'achead:include-directories '"/usr/lib/gcc/i686-pc-cygwin/4.9.3/include")
+      )
+    (add-hook 'c-mode-hook 'my:ac-c-header-init)
+    (add-hook 'c++-mode-hook 'my:ac-c-header-init)
+
+In the next function we use the operating system to set the command for 
+executing cpplint each time we open a cpp file in Emacs.  Unfortunately
+this is also path dependant so we use <user> to indicate a parameter that needs
+to be changed.
+
+    (defun my:flymake-google-init()
+      (require 'flymake-google-cpplint)
+      (custom-set-variables
+       '(flymake-google-cpplint-command "c:/Users/evan/Documents/eip/lint/Scripts/cpplint.exe"))
+      (flymake-google-cpplint-load)
+      (require 'flymake-cursor)
+      )
+    (add-hook 'c-mode-hook 'my:flymake-google-init)
+    (add-hook 'c++-mode-hook 'my:flymake-google-init)
+
+Next we add semantic as a backend to autocomplete.  And declare a project in ede mode
+so that auto complete will even work on user defined 
+
+    (defun my:add-semantic-to-autocomplete()
+      (add-to-list 'ac-sources 'ac-source-semantic)
+      )
+    (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+    (add-hook 'c++-mode-common-hook 'my:add-semantic-to-autocomplete)
+    
+    (global-ede-mode 1)
+    ;; create a project for our program.
+    (ede-cpp-root-project "hash" :file "C:/Users/<user>/Documents/hash/src/main.cpp"
+                          :include-path '("../my_inc"))
+    
+    ;; you can use system-include-path for setting up the system header file locations.
+    ;; turn on automatic reparsing of open buffers in semantic
+    (global-semantic-idle-scheduler-mode 1)
+
+The file also has to be changed  but it will allow you test the set up.
+
+# Donate
+
+If you enjoyed this, please watch this short music video of the heroic work that the
+people from Boom Health not just on Christmas but all year
+
+-   <https://www.youtube.com/watch?v=6Z00EH0oGrQ>
+
+Consider donating to 
+
+Boom Health
+226 E 144th St, Bronx, NY 10451
+(718) 292-7718
+
+or 
+
+NY Social Justice
+<http://www.nysocialjustice.org/Get_Involved_.html>
+
+Also people doing equally difficult work:
+
+<https://cygwin.com/donations.html>
