@@ -28,8 +28,8 @@
 
 The purpose of this repository is to provide high level instructions for a class
 leader to set up a modern cpp IDE on stuudent computers that is both free and 
-runs on Windows. This is a written version for window Baris Yuksel's excellent 
-videos.
+runs on Windows. This is a written version for window Baris Yuksel's  excellent 
+videos. WHO IS WINDOW BARIS YUKSEL?
 
 1. https://www.youtube.com/watch?v=HTUE03LnaXA
 2. https://www.youtube.com/watch?v=r_HW0EB67eY
@@ -57,8 +57,10 @@ Sander's rally. "That is a cool old dude. Am I going to change my life? No."
 
 ** The professional solution
 
-Visual Studio costs $800.  Although one can use the AStyle plugin to
-write styled code. On our lab computers this was never installed, let
+Visual Studio costs $800. So, probably students will only see it in
+campus labs. Most lab administrators are too busy to configure
+software for classroom use--for example, Visual Studio has an AStyle plugin to
+write styled code, but on our lab computers this was never installed, let
 alone configured.
 
 ** What students use
@@ -69,48 +71,45 @@ the url below for more detail.
 
 http://clicktobegin.net/programming/why-you-shouldnt-use-dev-c/
 
+WHAT ABOUT http://www.codeblocks.org?
+
 * Clean Needles
 
-If students will not leave proprietary software alone. I still want
+If students will not leave proprietary software alone, I still want
 them to learn posix style command line driven development. Here is my
-zero cost and Free Solution.  These are not self study directions for
-students. This requires using elisp to load packages and configure
-packages and python to run cpplint.  This is directed at the grad
-student adjunct or instructor teaching them.
+zero cost and Free Solution, directed at instructors running a class,
+rather than at students themselves--installing this requires using elisp to load packages and configure
+packages and python to run ~cpplint~. (Students who can configure a system
+that requires two languages other than  C++ should be taking a higher level course. 
+ 
 
 * Emacs
 
-The hacker's editor.  You can use if for 30 years. It is not really and editor.
-It is a REPL.  The best way for windows users to get it is via:
+The hacker's editor.  You can use it for 30 years. The best way for windows users to get it is via:
 
  http://vgoulet.act.ulaval.ca/en/emacs/windows/
 
-If you are a VIM afficianado, you can use Evil mode.
 
 * Google C++ Style Guide
 
 This has been operationalized in a python package (library) called
-cpplint that is freely available.  Now Google's style guide is
-somewhat controversial in the C++ community.  See
-https://news.ycombinator.com/item?id=7900238 for a critique of the
-guide ane the video https://www.youtube.com/watch?v=NOCElcMcFik for
-its philosophy.  What is not in doubt is that successful projects
-adhere to a style.  If you check out only one of these references
-watch, Greg Hartman-Kroah's "I Don't Want Your Code",
+cpplint that is freely available.  Google's style guide is
+somewhat controversial in the C++ community: see the video https://www.youtube.com/watch?v=NOCElcMcFik for
+its philosophy and 
+https://news.ycombinator.com/item?id=7900238 for a critique of it.
+What is not in doubt, though, is that successful projects
+adhere to a style: if you watch only one video linked here, watch  Greg Hartman-Kroah's "I Don't Want Your Code",
 https://www.youtube.com/watch?v=fMeH7wqOwXA.
 
 * Semantic Auto-Complete
 
 We install auto-complete with semantic parsing for a back end. We also make 
 auto-complete aware of our compiler include files.
+
 * Caveat
 
 These instructions do not cover all possible scenarios.  Emacs
-packages change version numbers and will need to be tweaked.  Teachers
-should not expect children who are taking their first programming
-course to configure a system that requires two separate languages
-besides C++, elisp and python.  If they can do this they should be 
-taking a higher level course. 
+packages change version numbers, for example; be prepared to do some minor tweaking. 
 
 * Benefit
 
@@ -125,12 +124,13 @@ First install modified Emacs for windows from:
  http://vgoulet.act.ulaval.ca/en/emacs/windows/
 
 Select all of the defaults.  It has a one click installer.  You will
-need this to modify the Windows PATH variable.  The PATH is list of
+need this to modify the Windows PATH variable. THIS IS HARD TO FOLLOW. The PATH is list of
 directories where the operating system searches for a program.
 
-Second install Cygwin. Cygwin can be confusing. It only installs a base package 
-on default and there is no repo management system. Instead, to additional
-packages, repeat the installation process with following difference.  When you
+Second, install Cygwin. Cygwin can be confusing. It only installs a base package 
+on default and there is no repo management system. Instead, to install
+additional
+packages, repeat the installation process, but when you
 come to the screen below search for the new program and left-click *skip*
 to download the binary of that program.  For our base install you should
 find g++, make, cmake and gdb.
@@ -139,19 +139,23 @@ find g++, make, cmake and gdb.
 #+NAME:   fig:cygwin select
 [[file:images/cygwin_select.png]]
 
-Third, to make linux utitities available from any path, you should
-understand where Cygwin is installed.  It is installed in C:/ not
-C:/Program Files. The binary versions of programs are in C:/Cygwin/bin
-which is what you need to add to the path.  You can not permanenty
-modify the PATH variable from cmd shell in windows.  You need to use the GUI.
-You can use version 3 of the Powershell but not every student will have that
-and the syntax is awkward.
+Third, to make linux utilities available from any path, you will need
+to modify the PATH environment variable. You can not permanently modify the PATH
+variable from
+the  cmd shell in windows; you will need to use the GUI instead. (You
+could instead use version 3 of the Powershell but not every student will have that
+and the syntax is awkward.)
 
-Instead go to Control Panel which exists in every version of Windows since NT.
-Find or select Advanced System Settings and Select Environmental Variables. If 
-given a choice you want System variable not for just the user.  Find the PATH
-and copy the variable value to a file in emacs. I use path_scratch. Make a copy 
-and add the path to cygwin at the end.  Here is my modified windows path.
+To do this (more details  below), go to Control Panel (this has been in every version of Windows since NT).
+Find or select  System Properties; in the Advanced tab, click
+Environmental Variables. On the next screen, if 
+given a choice you want System variables, not the ones just for the user.  Find the PATH
+and copy the variable value to a file in emacs (I use the filename ~path_scratch~). Make a copy 
+and add the path to cygwin at the end.
+
+(Note that Cygwin  is installed in ~C:/~, not
+~C:/Program Files~. The binary versions of programs are in ~C:/Cygwin/bin~
+which is what you need to add to the path. .  Here is my modified windows path:
 
 *** old path
 
@@ -166,9 +170,8 @@ and add the path to cygwin at the end.  Here is my modified windows path.
 %SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;c:\cygwin\bin
 #+END_SRC
 
-If you open a new cmd shell on windows 
 
-And here is the screen where you can change the environmental variable
+Here is the screen where you can change the environmental variable
 in Windows. In the next three images we display the Advanced System Variables,
 the Environmental Variables and finally the path selection.  The path will normally
 extend far beyond the borders.  My advice, is do not try to attempt to edit the
@@ -193,7 +196,7 @@ You will have to scroll in the system variables to find the PATH variable.
 
 Here are the tricks of Emacs and Windows CUA to successfully copy and edit the path.
 
-- Find path_scratch in the usual way C-x C-f path_scratch.
+- Find ~path_scratch~ in the usual way ~C-x C-f path_scratch~.
 - This brings up a blank file
 - Go to the Edit System Variable
   - Press C-a to select all of the variable value
@@ -216,8 +219,9 @@ python site:
 https://www.python.org/downloads/windows/
 
 As of this writing the latest release in the 2.7.x series is 2.7.10.
-Select that release for windows. Depending on whether or not you have
-a 64 bit machine. For my Windows 10 Virtual machine, I only have to search
+Select that release for windows. Be sure to select the 32-bit or
+64-bit version, depending on your machine (in Windows 10, I only need
+ to search
 system properties.  See information below:
 
 #+CAPTION: My system is 32 bit use the x86 installer
@@ -274,8 +278,7 @@ You can then run them in the way shown below:
 #+END_SRC
 
 It is generally good practice to set up a virtual environment in
-Python. We then set up a virtual environment. I am going to suggest that 
-we set up a virtualenv in user space.
+Python:
 
 #+BEGIN_SRC sh :exports code
 cd c:/Users/evan/Documents
@@ -329,8 +332,8 @@ Now we can define some new packages and install them automatically.
 #+END_SRC
 
 Next we add the configuration. You need to substitute your students windows user name
-where you see <user>.  The '<>' brackets are an indicator of a parameter and should
-not be included.
+where you see <user>.  The ~<>~ brackets are an indicator of a parameter and should
+not be included. I DON'T SEE ANY ~<>~ IN THESE SNIPPETS.
 
 #+BEGIN_SRC elisp :exports code
 (global-ede-mode 1)
