@@ -270,21 +270,20 @@ marmalade to your .emacs file.
 
     (require 'package)
     (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+    (package-initialize)
 
 Now we can define some new packages and install them automatically.
 
-    (defvar my-packages '(semantic/sb iedit auto-complete auto-complete-config
-                                      auto-complete-c-headers flymake-google-cpplint
-                                      flymake-cursor google-c-style))
+    (defvar my-packages '(iedit auto-complete ac-c-headers flymake-google-cpplint flymake-cursor google-c-style color-theme-sanityinc-solarized))
     
-    (package-initialize)
     (dolist (p my-packages)
       (when (not (package-installed-p p))
         (package-install p)))
 
 Next we add the configuration. You need to substitute your students windows user name
 where you see <user>.  The `<>` brackets are an indicator of a parameter and should
-not be included. I DON'T SEE ANY `<>` IN THESE SNIPPETS.
+not be included. The backets are in the third block of code
 
     (global-ede-mode 1)
     (require 'semantic/sb)
@@ -319,13 +318,12 @@ the following at the command prompt:
 
     gcc -xc++ -E -v -
 
-Use the result to modify:
+Use the result to modify the include directories:
 
     (defun my:ac-c-header-init ()
       (require 'auto-complete-c-headers)
       (add-to-list 'ac-sources 'ac-source-c-headers)
-      ;;  (add-to-list 'achead:include-directories '"/usr/lib/gcc/x86_64-linux-gnu/4.8/include")
-      (add-to-list 'achead:include-directories '"/usr/lib/gcc/i686-pc-cygwin/4.9.3/include")
+      (add-to-list 'achead:include-directories '"C:\cygwin\/usr/lib/gcc/i686-pc-cygwin/4.9.3/include")
       )
     (add-hook 'c-mode-hook 'my:ac-c-header-init)
     (add-hook 'c++-mode-hook 'my:ac-c-header-init)
@@ -338,7 +336,7 @@ to be changed.
     (defun my:flymake-google-init()
       (require 'flymake-google-cpplint)
       (custom-set-variables
-       '(flymake-google-cpplint-command "c:/Users/evan/Documents/eip/lint/Scripts/cpplint.exe"))
+       '(flymake-google-cpplint-command "c:/Users/<user>/Documents/eip/lint/Scripts/cpplint.exe"))
       (flymake-google-cpplint-load)
       (require 'flymake-cursor)
       )
