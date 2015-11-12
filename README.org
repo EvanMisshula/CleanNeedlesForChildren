@@ -150,7 +150,7 @@ and the syntax is awkward.
 Instead go to Control Panel which exists in every version of Windows since NT.
 Find or select Advanced System Settings and Select Environmental Variables. If 
 given a choice you want System variable not for just the user.  Find the PATH
-and copy the variable value to a file in emacs. I use path_scratch. Make a copy 
+and copy the variable value to a file in emacs. I use pathScratch. Make a copy 
 and add the path to cygwin at the end.  Here is my modified windows path.
 
 *** old path
@@ -169,11 +169,11 @@ and add the path to cygwin at the end.  Here is my modified windows path.
 If you open a new cmd shell on windows 
 
 And here is the screen where you can change the environmental variable
-in Windows. In the next three images we display the Advanced System Variables,
-the Environmental Variables and finally the path selection.  The path will normally
-extend far beyond the borders.  My advice, is do not try to attempt to edit the
-path there but rather copy it to Emacs where adding the path to C:/Cygwin/bin is 
-easy.
+in Windows. In the next three images we display the Advanced System
+Variables, the Environmental Variables and finally the path selection.
+The path will normally extend far beyond the borders.  My advice, is
+do not attempt to edit the path there but rather copy it to Emacs
+where adding the path to C:/Cygwin/bin is easy.
 
 #+CAPTION: The advanced system settings
 #+NAME:   fig:AdvSystem
@@ -193,12 +193,12 @@ You will have to scroll in the system variables to find the PATH variable.
 
 Here are the tricks of Emacs and Windows CUA to successfully copy and edit the path.
 
-- Find path_scratch in the usual way C-x C-f path_scratch.
+- Find pathScratch in the usual way C-x C-f pathScratch.
 - This brings up a blank file
 - Go to the Edit System Variable
   - Press C-a to select all of the variable value
   - Press C-c to copy the value to the windows clipboard
-- Put the cursor back in Emacs in the path_scratch file.  C-y called
+- Put the cursor back in Emacs in the pathScratch file.  C-y called
   yank to paste the variable back in Emacs.
 - Notice that each place the path searches is separated by a semi-colon
 - Make sure to put a semi-colon before new path.
@@ -439,6 +439,6 @@ or
 NY Social Justice
 http://www.nysocialjustice.org/Get_Involved_.html
 
-Also people doing equally difficult work:
+Also people doing equally important, thankless and stigmatized work:
 
 https://cygwin.com/donations.html

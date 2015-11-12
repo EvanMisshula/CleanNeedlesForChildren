@@ -1,0 +1,93 @@
+(require 'package)
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+
+(defvar my-packages '(iedit auto-complete ac-c-headers flymake-google-cpplint flymake-cursor google-c-style color-theme-sanityinc-solarized))
+
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
+
+(global-ede-mode 1)
+(require 'semantic/sb)
+;;(require 'auto-complete-c-headers)
+;;(add-to-list 'ac-sources 'ac-source-c-headers)
+(semantic-mode 1)
+
+(require 'iedit)
+(require 'auto-complete)
+(global-auto-complete-mode t)
+
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "C:/Users/evan/.emacs.d/elpa/auto-complete-20150618.1949/dict")
+(set-default 'ac-c-sources
+         '(ac-source-abbrev
+           ac-source-dictionary
+           ac-source-yasnippet
+           ac-source-words-in-buffer
+           ac-source-words-in-same-mode-buffers
+           ac-source-semantic))
+(ac-config-default)
+
+
+
+(defun my:add-semantic-to-autocomplete()
+  (add-to-list 'ac-sources 'ac-sources-semantic)
+  )
+(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+(add-hook 'c++-mode-common-hook 'my:add-semantic-to-autocomplete)
+
+
+
+(defun my:ac-c-header-init ()
+  (require 'auto-complete-c-headers)
+  (add-to-list 'ac-sources 'ac-source-c-headers)
+  ;;  (add-to-list 'achead:include-directories '"/usr/lib/gcc/x86_64-linux-gnu/4.8/include")
+  (add-to-list 'achead:include-directories '"c:\cygwin/usr/lib/gcc/i686-pc-cygwin/4.9.3/include/c++")
+  )
+(add-hook 'c-mode-hook 'my:ac-c-header-init)
+(add-hook 'c++-mode-hook 'my:ac-c-header-init)
+
+(defun my:flymake-google-init()
+  (require 'flymake-google-cpplint)
+  (custom-set-variables
+   '(flymake-google-cpplint-command "c:/Users/evan/Documents/eip/lint/Scripts/cpplint.exe"))
+  (flymake-google-cpplint-load)
+  (require 'flymake-cursor)
+  )
+(add-hook 'c-mode-hook 'my:flymake-google-init)
+(add-hook 'c++-mode-hook 'my:flymake-google-init)
+
+(defun my:add-semantic-to-autocomplete()
+  (add-to-list 'ac-sources 'ac-source-semantic)
+  )
+(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+(add-hook 'c++-mode-common-hook 'my:add-semantic-to-autocomplete)
+
+(global-ede-mode 1)
+;; create a project for our program.
+(ede-cpp-root-project "hash" :file "C:/Users/evan/Documents/hash/src/main.cpp"
+                      :include-path '("../my_inc"))
+
+;; you can use system-include-path for setting up the system header file locations.
+;; turn on automatic reparsing of open buffers in semantic
+(global-semantic-idle-scheduler-mode 1)
+
+;;(require 'color-theme-sanityinc-solarized)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
