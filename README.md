@@ -10,6 +10,11 @@ videos. Links to the original videos are given below:
 2.  <https://www.youtube.com/watch?v=r_HW0EB67eY>
 3.  <https://www.youtube.com/watch?v=Ib914gNr0ys>
 
+If you are a visual learner, I hope that my accompanying videos will help you
+as well.
+
+-   <https://www.youtube.com/watch?v=ncYCKDSSxPE&list=PLCNREIRuwoOnUCtafH-AYslD4ntiiBvHK>
+
 # What's with the name?
 
 Windows is terrible. Proprietary software is worse.  This project
