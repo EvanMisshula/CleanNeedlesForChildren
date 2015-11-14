@@ -72,7 +72,11 @@ the url below for more detail.
 
 http://clicktobegin.net/programming/why-you-shouldnt-use-dev-c/
 
-WHAT ABOUT http://www.codeblocks.org?
+If you are gong to make an IDE recommendation to students, it should
+be http://www.codeblocks.org. It is free and currently maintained. I just
+don't think C/C++ will be the only language they will ever need and Emacs
+can emulate many of the features and students will be able to reuse the same
+style on the next language (Lisp, Scheme, Clojure, Scala, Java or Node).
 
 * Clean Needles
 
